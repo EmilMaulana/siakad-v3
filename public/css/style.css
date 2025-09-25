@@ -1,0 +1,62 @@
+/* Mengimpor font Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+body {
+    font-family: "Poppins", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Transisi untuk sidebar dan konten utama */
+#sidebar,
+#main-content {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Gaya untuk sidebar yang diciutkan di desktop */
+@media (min-width: 768px) {
+    #sidebar.collapsed {
+        width: 5rem;
+        /* w-20 */
+    }
+
+    /* #main-content.collapsed {
+                    margin-left: 5rem;
+                } */
+    #sidebar.collapsed .nav-text,
+    #sidebar.collapsed .menu-title,
+    #sidebar.collapsed .logo-text {
+        display: none;
+    }
+
+    #sidebar.collapsed nav a {
+        justify-content: center;
+    }
+
+    #sidebar.collapsed nav a .fa-fw {
+        margin-right: 0;
+    }
+
+    #sidebar.collapsed #collapse-icon {
+        transform: rotate(180deg);
+    }
+}
+
+/* Gaya untuk scrollbar kustom */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
