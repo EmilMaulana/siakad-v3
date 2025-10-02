@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Session;
 class Index extends Component
 {
     public $classes = [];
+    public $majors = [];
+    public $academicYears = [];
 
     // data form
     public $classId, $name, $code, $major_id, $academic_year_id;
@@ -25,6 +27,7 @@ class Index extends Component
     public function mount()
     {
         $this->loadClasses();
+        $this->loadDropdownData();
     }
 
     public function updatingSearch()
@@ -39,6 +42,26 @@ class Index extends Component
         $this->loadClasses();
     }
 
+    public function loadDropdownData()
+    {
+        $baseUrl = config('app.api_url');
+        $token   = Session::get('token');
+
+        // Ambil data Jurusan
+        $responseMajors = Http::withToken($token)->get("{$baseUrl}/majors");
+        if ($responseMajors->successful()) {
+            // Asumsi responsnya memiliki struktur { "data": [...] }
+            $this->majors = $responseMajors->json('data') ?? [];
+        }
+
+        // Ambil data Tahun Ajaran
+        $responseAcademicYears = Http::withToken($token)->get("{$baseUrl}/academic-years");
+        if ($responseAcademicYears->successful()) {
+            // Asumsi responsnya memiliki struktur { "data": [...] }
+            $this->academicYears = $responseAcademicYears->json('data') ?? [];
+        }
+    }
+
     public function loadClasses()
     {
         $baseUrl = config('app.api_url');
@@ -51,12 +74,18 @@ class Index extends Component
         ]);
 
         if ($response->successful()) {
-            $result = $response->json('data') ?? [];
+            // Ambil seluruh isi JSON dari response
+            $result = $response->json();
 
-            $this->classes     = $result['data'] ?? [];
-            $this->currentPage = $result['current_page'] ?? 1;
-            $this->total       = $result['total'] ?? 0;
-            $this->lastPage    = $result['last_page'] ?? 1;
+            // Akses data sesuai dengan struktur JSON dari Postman
+            $this->classes     = $result['data']['data'] ?? [];
+            $this->currentPage = $result['data']['current_page'] ?? 1;
+            $this->lastPage    = $result['data']['last_page'] ?? 1;
+            $this->total       = $result['data']['total'] ?? 0;
+        } else {
+            // Jika API gagal, pastikan classes adalah array kosong
+            $this->classes = [];
+            session()->flash('error', 'Gagal memuat data kelas dari server.');
         }
     }
 
