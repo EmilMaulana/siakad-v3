@@ -16,6 +16,10 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 
 </head>
@@ -32,7 +36,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M9 12.75L11.25 15l4.5-4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span class="text-xl font-extrabold text-white logo-text">Antree</span>
+                <span class="text-xl font-extrabold text-white logo-text">SIAKAD</span>
             </div>
 
             <!-- Navigasi -->
@@ -49,11 +53,7 @@
                     <li>
                         <a href="{{ route('academic-year.index') }}"
                             class="flex items-center p-3 rounded-lg transition duration-200 {{ request()->routeIs('academic-year.index') ? 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100' : 'text-gray-700 hover:bg-gray-100 hover:text-indigo-600' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                            </svg>
+                            <i class="fas fa-calendar-alt fa-fw mr-3 text-md"></i>
                             <span class="font-medium nav-text">Tahun Akademik</span>
                         </a>
                     </li>
@@ -85,6 +85,20 @@
                             <span class="font-medium nav-text">Data Kelas</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('teacher-class.index') }}"
+                            class="flex items-center p-3 rounded-lg transition duration-200 {{ request()->routeIs('teacher-class.index') ? 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100' : 'text-gray-700 hover:bg-gray-100 hover:text-indigo-600' }}">
+                            <i class="fas fa-chalkboard-teacher fa-fw mr-3 text-md"></i>
+                            <span class="font-medium nav-text">Penugasan Guru</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('student-class.index') }}"
+                            class="flex items-center p-3 rounded-lg transition duration-200 {{ request()->routeIs('student-class.index') ? 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100' : 'text-gray-700 hover:bg-gray-100 hover:text-indigo-600' }}">
+                            <i class="fas fa-users fa-fw mr-3 text-md"></i>
+                            <span class="font-medium nav-text">Penempatan Siswa</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
 
@@ -101,9 +115,9 @@
         <div id="main-content" class="flex-1 flex flex-col md:ml-64">
             <!-- Header -->
             <header
-                class="flex items-center justify-between h-20 bg-white shadow-md px-6 z-40 fixed top-0 left-0 right-0">
+                class="flex items-center justify-between h-20 bg-gradient-to-r from-indigo-600 to-blue-500 shadow-md px-6 z-40 fixed top-0 left-0 right-0">
                 <div class="flex items-center">
-                    <button id="sidebar-toggle" class="text-gray-500 focus:outline-none focus:text-gray-700 md:hidden">
+                    <button id="sidebar-toggle" class="text-white focus:outline-none focus:text-gray-700 md:hidden">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
@@ -122,7 +136,7 @@
 
                     <div class="flex items-center space-x-4">
                         <div class="relative group">
-                            <button class="flex items-center text-gray-600 hover:text-indigo-600 focus:outline-none">
+                            <button class="flex items-center text-white hover:text-indigo-600 focus:outline-none">
                                 <img src="https://placehold.co/40x40/e2e8f0/334155?text={{ $initials }}"
                                     alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-indigo-500" />
                                 <span class="ml-2 font-medium hidden sm:block">
@@ -224,6 +238,8 @@
             });
         });
     </script>
+
+
 </body>
 
 </html>

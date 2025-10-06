@@ -13,7 +13,7 @@ class Index extends Component
     public $academicYears = [];
 
     // data form
-    public $classId, $name, $code, $major_id, $academic_year_id;
+    public $classId, $name, $code, $major_id, $academic_year_id, $semester;
     public $isModalOpen = false;
     public $isDeleteModalOpen = false;
     public $deleteId = null;
@@ -108,6 +108,7 @@ class Index extends Component
                 $this->code             = $class['code'];
                 $this->major_id         = $class['major_id'];
                 $this->academic_year_id = $class['academic_year_id'];
+                $this->semester         = $class['semester'];
             }
         }
         $this->isModalOpen = true;
@@ -122,6 +123,7 @@ class Index extends Component
     public function resetInput()
     {
         $this->classId = null;
+        $this->semester = '';
         $this->name = '';
         $this->code = '';
         $this->major_id = '';
@@ -135,16 +137,30 @@ class Index extends Component
             'code'             => 'required|string',
             'major_id'         => 'required|integer',
             'academic_year_id' => 'required|integer',
+            'semester'         => 'required|string',
         ]);
 
         $baseUrl = config('app.api_url');
         $token   = Session::get('token');
+
+        $check = Http::withToken($token)->get("{$baseUrl}/classes", [
+            'search' => $this->code
+        ]);
+
+        if ($check->successful()) {
+            $existing = collect($check->json('data.data'))->firstWhere('code', $this->code);
+            if ($existing && !$this->classId) {
+                session()->flash('error', 'Kode kelas sudah digunakan.');
+                return;
+            }
+        }
 
         $payload = [
             'name'             => $this->name,
             'code'             => $this->code,
             'major_id'         => $this->major_id,
             'academic_year_id' => $this->academic_year_id,
+            'semester'         => $this->semester,
         ];
 
         if ($this->classId) {
@@ -156,8 +172,20 @@ class Index extends Component
         if ($response->successful()) {
             $this->loadClasses();
             $this->closeModal();
+            session()->flash('success', 'Data kelas berhasil disimpan.');
+        } else {
+            $body = $response->json();
+
+            if (isset($body['errors'])) {
+                $firstError = collect($body['errors'])->flatten()->first();
+                session()->flash('error', $firstError ?? 'Validasi gagal.');
+            } else {
+                session()->flash('error', $body['message'] ?? 'Gagal menyimpan data kelas.');
+            }
         }
+
     }
+
 
     public function confirmDelete($id)
     {
