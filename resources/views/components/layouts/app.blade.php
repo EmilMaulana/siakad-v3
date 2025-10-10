@@ -127,7 +127,7 @@
                     </div>
                     @php
                     $user = session('user');
-                    $name = $user['name'] ?? 'Guest';
+                    $name = $user['email'] ?? 'Guest';
 
                     $initials = collect(explode(' ', $name))
                     ->map(fn($word) => strtoupper(substr($word, 0, 1)))

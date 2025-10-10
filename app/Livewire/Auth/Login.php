@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 class Login extends Component
 {
     public $email;
+    public $name;
     public $password;
 
     public function login()
@@ -33,7 +34,8 @@ class Login extends Component
                 Session::put('token', $data['token'] ?? null);
 
                 Session::put('user', [
-                    'name' => $this->email, 
+                    'name' => $this->name, 
+                    'email' => $this->email, 
                 ]);
 
                 return redirect()->route('dashboard')->with('successMessage', 'Login berhasil selamat datang ' . $this->email);
